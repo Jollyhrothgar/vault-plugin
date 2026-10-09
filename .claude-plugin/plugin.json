@@ -1,0 +1,9 @@
+{
+  "name": "vault",
+  "description": "Thread notes in a personal knowledge vault: capture what you are thinking on the way out of a task (note), get it back on the way in (recall), link reminders to threads (remind), and sweep stale threads (prune).",
+  "author": {
+    "name": "Mike Beaumier",
+    "url": "https://github.com/Jollyhrothgar"
+  },
+  "repository": "https://github.com/Jollyhrothgar/personal_ai_config"
+}
