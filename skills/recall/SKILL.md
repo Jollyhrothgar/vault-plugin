@@ -172,55 +172,7 @@ separately — which direction a relationship runs is information.
 Present hops 2 and 3 **in file order, unranked**. Ordering by relevance is
 ranking, and ranking is judgment.
 
-### 5. Sessions — what the agents did, kept separate from what he thought
-
-The vault holds his thinking. `session-synth` holds a different thing entirely:
-automatic takeover briefings for past Claude Code and OpenCode sessions — agent
-work history, written by a model about a transcript, never deposited by him and
-never in his voice. **A briefing is not vault content and must never be
-presented as one.** Two sources, two labels, always:
-
-> **Your notes say** — *(the thread, verbatim, as above)*
->
-> **Your sessions show** — 2 briefings mention this:
-> ```
-> ses_fca403dfaffeCpCaevE6N9JvWa  detector fixtures and run variance
->   Run-to-run variance is large enough that a single run is not evidence…
-> c7198a26-1945-43cc-99bb-3bb948c15fd4  session-synth leverage pair
->   The fold header speaks two-way language but is emitted once per prior…
-> ```
-> Take one over with `takeover <id>`.
-
-Query it with the topic you resolved in step 1:
-
-```bash
-uv run --no-project python "$(ls ~/.claude/skills/session-synth/scripts/run.py \
-                                 ~/.config/opencode/skills/session-synth/scripts/run.py \
-                                 2>/dev/null | head -1)" search "<topic>" --limit 5
-```
-
-The `$(ls … | head -1)` resolves whichever platform has it installed; shell
-variables do not persist between tool calls, so the whole prefix goes on every
-invocation. Keep `--no-project` — plain `uv run` would resolve whatever project
-the caller happens to be standing in.
-
-**If session-synth is not installed** the command fails with `can't find
-'__main__' module`. Say one line — "session-synth isn't installed, so this is
-vault only" — and carry on. It is a second source, not a dependency; its
-absence costs a sentence, not the recall.
-
-`search` returns id, title, and the head of the briefing — no dates and no
-repo. If he wants either, `show <id>` has them; do not invent them.
-
-**Always carry the session ids.** They are the handle for `takeover`, which is
-how he re-enters the session itself instead of reading about it — the one thing
-this half offers that the vault cannot.
-
-Do not summarize the briefings, do not merge them into the thread, and do not
-rank them. The rule governing the vault half governs this half unchanged:
-describe, don't decide.
-
-### 6. Open reminders
+### 5. Open reminders
 
 ```bash
 osascript -e 'tell application "Reminders" to get name of lists'
@@ -235,7 +187,7 @@ osascript -e 'tell application "Reminders" to get {name, body, remind me date} o
 Filter for `thread: <slug>` in the body. Report them plainly — the obligations
 half of the switch, alongside the thinking half.
 
-### 7. Git history — only on request
+### 6. Git history — only on request
 
 Not included by default. If he asks how he got here or how his thinking moved:
 
@@ -252,17 +204,13 @@ cd ~/workspace/knowledge-vault/main && git log -p threads/<slug>.md
 - Snapshots were listed as dates only, or not mentioned at all when there are none.
 - Hops 2 and 3 are one line per thread, unranked.
 - Alias resolution, if it happened, was stated.
-- Session briefings, if any, are labelled as sessions rather than blended into
-  his notes, and each one carries its id.
 - Nothing in the output tells him what to work on.
 
 ## Stop Conditions
 
 - **Nothing matches at any hop** — say so plainly and stop. Do not offer a
   guess at a related topic he did not ask for. An empty vault result means the
-  thinking was never deposited, which is useful to know — but check the sessions
-  half before you say it, because agents may have worked the topic hard without
-  him ever writing it down.
+  thinking was never deposited, which is useful to know.
 - **The query is a single very common word** (`work`, `the`, `stuff`) — ask for
   something narrower rather than returning every thread.
 
@@ -273,7 +221,5 @@ cd ~/workspace/knowledge-vault/main && git log -p threads/<slug>.md
 - **`osascript` permission error** (`Not authorized to send Apple events`):
   report that reminders could not be read, deliver the thread material anyway.
   Partial recall beats no recall.
-- **session-synth not installed, or its database not built yet**: one line
-  saying the answer is vault-only, then carry on. The vault half stands alone.
 - **Failure partway through**: just stop. Reads change nothing, so there is
   nothing to release and nothing left in a bad state.
