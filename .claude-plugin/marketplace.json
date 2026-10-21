@@ -1,0 +1,15 @@
+{
+  "name": "vault-plugin",
+  "description": "The vault Claude Code plugin, installable on its own.",
+  "owner": {
+    "name": "Mike Beaumier",
+    "url": "https://github.com/Jollyhrothgar"
+  },
+  "plugins": [
+    {
+      "name": "vault",
+      "source": "./",
+      "description": "Thread notes in a personal knowledge vault: capture what you are thinking on the way out of a task (note), get it back on the way in (recall), link reminders to threads (remind), and sweep stale threads (prune)."
+    }
+  ]
+}
