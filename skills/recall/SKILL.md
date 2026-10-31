@@ -1,13 +1,14 @@
 ---
 name: recall
 description: >-
-  Retrieve what Mike already thought about a topic — his thread notes, related
-  threads, dated status snapshots, and any open reminders tied to them. Use when
-  the user says "/recall", "what do I know about X", "where did I leave X", "what
-  was I thinking about X", "pick up X again", "did I write anything about X",
-  "when did I last send an update on X", or when re-entering a line of work after
-  a task switch. Do NOT use to capture new
-  thinking (use `note`) or to create reminders (use `remind`).
+  Retrieves what Mike already thought about a topic — his thread notes, related
+  threads, dated status snapshots, his own daily logs and raw dumps, and any open
+  reminders tied to them. Use when the user says "/recall", "what do I know about
+  X", "where did I leave X", "what was I thinking about X", "pick up X again",
+  "did I write anything about X", "what did I write this week", "show my daily
+  logs", "when did I last send an update on X", or when re-entering a line of
+  work after a task switch. Do NOT use to capture new thinking (use `note`) or to
+  create reminders (use `remind`).
 ---
 
 # Recall
@@ -27,7 +28,20 @@ Vault: `~/workspace/knowledge-vault/main`
 
 `recall` is a reader. It never writes to the vault. If a write turns out to be
 needed, it goes through `note` (or `bin/vault-write begin` / `publish`) — never by
-editing the `main` worktree directly.
+editing the `main` worktree directly. Mike writes in `main` himself, so
+uncommitted files there are his work in progress: read them, never touch them.
+
+What the vault holds, beyond threads:
+
+| Path | What it is | Who writes it |
+| --- | --- | --- |
+| `reflections/daily-logs/YYYY-MM-DD.md` | His daily writing, opening with an intention | Mike, by hand |
+| `dumps/<slug>/YYYY-MM-DD-*.md` | Raw dumps and voice memo transcripts, his words unedited | Mike, filed by tools |
+| `reflections/<slug>/*.md` | Breakdowns and practices, marked `author: claude` | Agents |
+
+Daily logs and dumps are his words, so the verbatim rule applies to them exactly
+as it does to threads. Agent-written reflections are not his thinking; label
+them as agent-written whenever you show one.
 
 ## Output shape
 
@@ -149,6 +163,31 @@ thinking. It is a fact about two dates, not a judgment about what to do.
 If the directory does not exist, output nothing about snapshots. Most threads
 have none, and "no snapshots" is a line of noise on every recall.
 
+#### Then list his own writing that mentions it — paths and dates only
+
+```bash
+cd ~/workspace/knowledge-vault/main
+grep -ril "<query>" reflections/daily-logs/ dumps/ 2>/dev/null | sort
+```
+
+```
+His writing (3):
+  reflections/daily-logs/2026-10-31.md
+  dumps/coaching/2026-10-29-coaching-goal.md
+  dumps/career-direction/2026-10-29.md
+Say one to see it.
+```
+
+Dates order these; nothing ranks them. Show a file only when he asks, and then
+verbatim. If nothing matches, say nothing about it.
+
+**When he asks for his daily logs directly** ("what did I write this week",
+"show my daily logs"), skip the thread hops: list `reflections/daily-logs/` by
+date, newest first, each with its first line, which is usually that day's
+intention. Output any day he picks verbatim. Do not summarize a week of logs,
+find themes in them, or say what they add up to unless he asks for exactly that,
+and when he does, quote rather than paraphrase.
+
 ### 3. Hop 2 — shared topics
 
 ```bash
@@ -205,6 +244,8 @@ cd ~/workspace/knowledge-vault/main && git log -p threads/<slug>.md
 - Hops 2 and 3 are one line per thread, unranked.
 - Alias resolution, if it happened, was stated.
 - Nothing in the output tells him what to work on.
+- Daily logs and dumps were listed by path and date, and shown only verbatim.
+- Any agent-written reflection that was shown was labelled as agent-written.
 
 ## Stop Conditions
 

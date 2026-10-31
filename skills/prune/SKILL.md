@@ -1,8 +1,8 @@
 ---
 name: prune
 description: >-
-  Sweep Mike's vault for rot — stale threads and a drifting topic vocabulary —
-  and act on his decisions. Use when the user says "/prune", "the vault feels
+  Sweeps Mike's vault for rot — stale threads and a drifting topic vocabulary —
+  and acts on his decisions. Use when the user says "/prune", "the vault feels
   noisy", "clean up my notes", "too many threads", "my topics are a mess", or
   asks to consolidate or tidy the vault. Do NOT run this on a schedule or
   unprompted; it only runs when he asks. Do NOT use to capture (use `note`) or
@@ -18,6 +18,12 @@ singletons, so the order matters.
 his call. Your job is the mechanical rewrite afterward.
 
 Vault: `~/workspace/knowledge-vault/main`
+
+**Scope is `threads/`, `updates/`, and `topics.md` only.** Never propose deleting,
+merging, or rewriting anything under `dumps/` or `reflections/`, and above all
+`reflections/daily-logs/`, his daily writing. Old logs are not rot; an unread
+log is still his record of the day. Never touch uncommitted files in `main`;
+those are his work in progress.
 
 **Never run this from a schedule, a cron, or a hook.** Pruning on a timer is the
 tool deciding the vault needs attention; pruning when he notices noise is him
@@ -202,6 +208,7 @@ git status --short                # confirm only your own paths are dirty
 - Every `topics:` value still resolves to a `##` entry in `topics.md`.
 - Every merged-away topic survives as an alias.
 - Rot metrics were reported, not written to a file.
+- Nothing under `dumps/` or `reflections/` was proposed for deletion or changed.
 - The vault-writer lock was released after each committed pass.
 
 ## Stop Conditions
@@ -212,8 +219,9 @@ git status --short                # confirm only your own paths are dirty
   and confirm before removing, since those links will break.
 - **A vocabulary rewrite would touch more than ~15 threads** — confirm the full
   scope before writing, and offer to split it across two commits.
-- **The repo is dirty with unrelated work** — stop. Rewrites across many files
-  need a clean baseline to be revertible.
+- **Your write worktree is dirty with unrelated work** — stop. Rewrites across
+  many files need a clean baseline to be revertible. A dirty `main` is normal,
+  since Mike writes there, and is not a reason to stop.
 - **Another write is in flight** — `vault-write status` lists them. This is not
   a reason to stop: writers no longer block each other, and a conflict, if one
   comes, surfaces at publish time.

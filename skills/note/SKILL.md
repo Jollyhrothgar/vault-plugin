@@ -1,7 +1,7 @@
 ---
 name: note
 description: >-
-  Interview Mike about what he is thinking, then fold it into a thread note in
+  Interviews Mike about what he is thinking, then folds it into a thread note in
   his vault so he can re-enter that line of work later. Use when the user says
   "/note", "let's capture this", "I'm switching off of X", "park this",
   "write this up", "brain dump", or is about to drop a line of work and would
@@ -9,8 +9,9 @@ description: >-
   when an agent that just did the work should fold what it learned into a thread,
   or when they ask for a dated status snapshot ("where are things at on X",
   "write a status update").
-  Do NOT use for obligations or follow-ups (use `remind`) or for retrieving
-  existing notes (use `recall`).
+  Do NOT use for obligations or follow-ups (use `remind`), for retrieving
+  existing notes (use `recall`), or to write his daily log, which he writes
+  himself.
 ---
 
 # Note
@@ -53,8 +54,24 @@ interviewing. A hundred threads is a trivial read; read them all rather than
 grepping for a guess.
 
 **Keep `$VW_token` and `$VW_vault` for the rest of the run.** The token publishes
-the fold in step 8; the path is the only place you may write. Never read or write
-`~/workspace/knowledge-vault/main` directly — that is the shared read worktree.
+the fold in step 8; the path is the only place you may write. Never write to
+`~/workspace/knowledge-vault/main` — Mike writes and commits there by hand, and
+uncommitted files in it are his work in progress.
+
+#### His own writing is source, never a target
+
+`reflections/daily-logs/YYYY-MM-DD.md` is his daily writing, typed directly in
+Obsidian. `dumps/` holds raw dumps and voice memo transcripts. Both are his words
+and both are immutable to you: never create, edit, or summarize them in place,
+and never stage or commit them for him. Today's log may exist only as an
+uncommitted file in `main`, so read it from there.
+
+When he points at one ("fold what I wrote this morning into career-direction"),
+read it, then fold his own sentences into the thread, quoted or lightly
+trimmed, never rewritten in your words. Add the source to `Related`
+with a path-qualified link, since bare dates collide with dated dumps
+(`[[reflections/daily-logs/2026-10-31|2026-10-31 log]] — where this came from`); the log never links to the thread.
+The interview still runs, shorter: ask only what the log does not answer.
 
 If you finish the interview and Mike decides there is nothing to fold, release
 the worktree with `vault-write abort "$VW_token"`. It refuses if you are holding
@@ -266,8 +283,9 @@ per-day log nobody re-read, then a knowledge graph nobody read.
 **A named audience is the precondition. No audience, no update.** Write one only
 when there is someone it is for — a team, stakeholder, person, or channel — and
 name them in `audience:`. If he cannot say who it is for, the thinking belongs in
-the thread instead. `audience: me` is not valid; a snapshot addressed to himself
-is the daily log returning, and the thread already serves that purpose.
+the thread instead. `audience: me` is not valid. Writing addressed to himself is
+his daily log, which he writes by hand in `reflections/daily-logs/`; an
+agent-written update never stands in for it.
 
 ```markdown
 ---
@@ -422,6 +440,8 @@ He decides. Do not turn this into a review of the whole vault; that is `prune`.
 - Any status summary went to `updates/<slug>/<date>.md`, dated, marked as
   a snapshot, and named a real audience — not into the thread body and never
   written without someone to write it for.
+- No file in `reflections/daily-logs/` or `dumps/` was created or changed, and
+  nothing in `main` was touched.
 - The commit landed and was pushed.
 - The vault-writer lock was released by a successful publish.
 - No Someday reminder was marked complete before its fold was committed.
