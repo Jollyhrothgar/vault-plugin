@@ -20,8 +20,8 @@ his call. Your job is the mechanical rewrite afterward.
 Vault: `~/workspace/knowledge-vault/main`
 
 **Scope is `threads/`, `updates/`, and `topics.md` only.** Never propose deleting,
-merging, or rewriting anything under `dumps/` or `reflections/`, and above all
-`reflections/daily-logs/`, his daily writing. Old logs are not rot; an unread
+merging, or rewriting anything else in the vault; the rest is his space, however
+he has organized it, and that includes his daily logs. Old logs are not rot; an unread
 log is still his record of the day. Never touch uncommitted files in `main`;
 those are his work in progress.
 
@@ -208,7 +208,8 @@ git status --short                # confirm only your own paths are dirty
 - Every `topics:` value still resolves to a `##` entry in `topics.md`.
 - Every merged-away topic survives as an alias.
 - Rot metrics were reported, not written to a file.
-- Nothing under `dumps/` or `reflections/` was proposed for deletion or changed.
+- Nothing outside `threads/`, `updates/`, and `topics.md` was proposed for
+  deletion or changed.
 - The vault-writer lock was released after each committed pass.
 
 ## Stop Conditions

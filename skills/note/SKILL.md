@@ -60,17 +60,19 @@ uncommitted files in it are his work in progress.
 
 #### His own writing is source, never a target
 
-`reflections/daily-logs/YYYY-MM-DD.md` is his daily writing, typed directly in
-Obsidian. `dumps/` holds raw dumps and voice memo transcripts. Both are his words
-and both are immutable to you: never create, edit, or summarize them in place,
-and never stage or commit them for him. Today's log may exist only as an
-uncommitted file in `main`, so read it from there.
+Beyond `threads/` and `updates/`, the vault is his space, and he moves things
+freely, so find notes by searching rather than by path. Any note without
+frontmatter `author: claude` is his words: daily logs (`folder` in
+`.obsidian/daily-notes.json`), raw dumps, voice memos, raw transcripts. They are
+immutable to you: never create, edit, or summarize them in place, and never stage
+or commit them for him. Today's log may exist only as an uncommitted file in
+`main`, so read it from there.
 
 When he points at one ("fold what I wrote this morning into career-direction"),
 read it, then fold his own sentences into the thread, quoted or lightly
 trimmed, never rewritten in your words. Add the source to `Related`
-with a path-qualified link, since bare dates collide with dated dumps
-(`[[reflections/daily-logs/2026-10-31|2026-10-31 log]] — where this came from`); the log never links to the thread.
+by note name, so the link survives a move (`[[2026-10-31]] — where this came
+from`); the log never links to the thread.
 The interview still runs, shorter: ask only what the log does not answer.
 
 If you finish the interview and Mike decides there is nothing to fold, release
@@ -284,7 +286,7 @@ per-day log nobody re-read, then a knowledge graph nobody read.
 when there is someone it is for — a team, stakeholder, person, or channel — and
 name them in `audience:`. If he cannot say who it is for, the thinking belongs in
 the thread instead. `audience: me` is not valid. Writing addressed to himself is
-his daily log, which he writes by hand in `reflections/daily-logs/`; an
+his daily log, which he writes by hand; an
 agent-written update never stands in for it.
 
 ```markdown
@@ -440,8 +442,7 @@ He decides. Do not turn this into a review of the whole vault; that is `prune`.
 - Any status summary went to `updates/<slug>/<date>.md`, dated, marked as
   a snapshot, and named a real audience — not into the thread body and never
   written without someone to write it for.
-- No file in `reflections/daily-logs/` or `dumps/` was created or changed, and
-  nothing in `main` was touched.
+- None of his writing was created or changed, and nothing in `main` was touched.
 - The commit landed and was pushed.
 - The vault-writer lock was released by a successful publish.
 - No Someday reminder was marked complete before its fold was committed.
