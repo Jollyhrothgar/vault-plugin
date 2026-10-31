@@ -31,17 +31,12 @@ needed, it goes through `note` (or `bin/vault-write begin` / `publish`) — neve
 editing the `main` worktree directly. Mike writes in `main` himself, so
 uncommitted files there are his work in progress: read them, never touch them.
 
-What the vault holds, beyond threads:
-
-| Path | What it is | Who writes it |
-| --- | --- | --- |
-| `reflections/daily-logs/YYYY-MM-DD.md` | His daily writing, opening with an intention | Mike, by hand |
-| `dumps/<slug>/YYYY-MM-DD-*.md` | Raw dumps and voice memo transcripts, his words unedited | Mike, filed by tools |
-| `reflections/<slug>/*.md` | Breakdowns and practices, marked `author: claude` | Agents |
-
-Daily logs and dumps are his words, so the verbatim rule applies to them exactly
-as it does to threads. Agent-written reflections are not his thinking; label
-them as agent-written whenever you show one.
+Beyond `threads/` and `updates/`, the vault is Mike's space. He organizes it by
+hand and moves things freely, so never assume a path inside it. Tell notes apart
+by content: frontmatter `author: claude` marks an agent-written note, and label
+it as agent-written whenever you show one. Every other note is his words (daily
+logs, raw dumps, voice memos, raw transcripts), so the verbatim rule applies
+exactly as it does to threads.
 
 ## Output shape
 
@@ -167,14 +162,17 @@ have none, and "no snapshots" is a line of noise on every recall.
 
 ```bash
 cd ~/workspace/knowledge-vault/main
-grep -ril "<query>" reflections/daily-logs/ dumps/ 2>/dev/null | sort
+grep -ril "<query>" . --include='*.md' --exclude-dir=threads --exclude-dir=updates \
+  --exclude-dir=bin --exclude=AGENTS.md --exclude=README.md --exclude=topics.md | sort
 ```
+
+Paths may contain spaces, so quote them. Mark any match carrying `author: claude`.
 
 ```
 His writing (3):
-  reflections/daily-logs/2026-10-31.md
-  dumps/coaching/2026-10-29-coaching-goal.md
-  dumps/career-direction/2026-10-29.md
+  Coaching/Reflections/Daily Logs/2026-10-31.md
+  Coaching/Voice Memos/2026-10-29-coaching-goal.md
+  Coaching/Reflections/Prompts/gut-practice.md  (agent-written)
 Say one to see it.
 ```
 
@@ -182,8 +180,8 @@ Dates order these; nothing ranks them. Show a file only when he asks, and then
 verbatim. If nothing matches, say nothing about it.
 
 **When he asks for his daily logs directly** ("what did I write this week",
-"show my daily logs"), skip the thread hops: list `reflections/daily-logs/` by
-date, newest first, each with its first line, which is usually that day's
+"show my daily logs"), skip the thread hops: read `folder` from
+`.obsidian/daily-notes.json` and list that folder by date, newest first, each with its first line, which is usually that day's
 intention. Output any day he picks verbatim. Do not summarize a week of logs,
 find themes in them, or say what they add up to unless he asks for exactly that,
 and when he does, quote rather than paraphrase.
@@ -244,7 +242,7 @@ cd ~/workspace/knowledge-vault/main && git log -p threads/<slug>.md
 - Hops 2 and 3 are one line per thread, unranked.
 - Alias resolution, if it happened, was stated.
 - Nothing in the output tells him what to work on.
-- Daily logs and dumps were listed by path and date, and shown only verbatim.
+- His writing was listed by path and date, and shown only verbatim.
 - Any agent-written reflection that was shown was labelled as agent-written.
 
 ## Stop Conditions

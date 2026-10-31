@@ -24,10 +24,10 @@ What the skills expect inside the vault:
 - `threads/`, one note per line of work
 - `topics.md`, an index of threads
 - `updates/`, dated update notes
-- `dumps/`, raw dumps and voice memo transcripts in Mike's words
-- `reflections/`, agent-written breakdowns, plus `reflections/daily-logs/`,
-  Mike's daily writing, which he types and commits in `main` himself. The
-  skills read these and never write them.
+- Anything else is Mike's own space, which he organizes and commits in `main`
+  by hand: daily logs, raw dumps, voice memo transcripts. The skills find these
+  by searching the vault, read them, and never write them. Frontmatter
+  `author: claude` marks the agent-written notes among them.
 - `bin/vault-write`, which writes in a temporary worktree and publishes
   through a pull request
 
