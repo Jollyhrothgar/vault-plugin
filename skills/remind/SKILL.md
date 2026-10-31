@@ -1,8 +1,8 @@
 ---
 name: remind
 description: >-
-  Triage a reminder request into the right macOS Reminders.app list, link it to
-  the vault thread it belongs to, and create it there. Work items land in a work
+  Triages a reminder request into the right macOS Reminders.app list, links it to
+  the vault thread it belongs to, and creates it there. Work items land in a work
   list bucketed by urgency (Work - Now, Work - Soon, or Work - Someday as a
   phone-capture inbox that `note` later drains); non-work items route to a matching
   personal list (Groceries, family lists) or the default Reminders list. Use when
@@ -89,9 +89,9 @@ ls ~/workspace/knowledge-vault/main/threads/
 grep -ril "<keyword from the request>" ~/workspace/knowledge-vault/main/threads/
 ```
 
-Reads come from the `main` worktree, and writes never touch it — every write lands
-via a squash-merged PR from a private worktree — so this always works and can never
-catch a half-written state. There is no busy case and nothing to retry. Run
+Reads come from the `main` worktree, and agent writes never touch it — every agent
+write lands via a squash-merged PR from a private worktree — so this always works.
+Mike also writes there by hand; his uncommitted files are his to commit. There is no busy case and nothing to retry. Run
 `~/workspace/knowledge-vault/main/bin/vault-write read` first if you want the read
 worktree fast-forwarded.
 
