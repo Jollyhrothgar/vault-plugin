@@ -2,13 +2,12 @@
 name: recall
 description: >-
   Retrieves what Mike already thought about a topic — his thread notes, related
-  threads, dated status snapshots, his own daily logs and raw dumps, and any open
-  reminders tied to them. Use when the user says "/recall", "what do I know about
+  threads, dated status snapshots, and his own daily logs and raw dumps. Use
+  when the user says "/recall", "what do I know about
   X", "where did I leave X", "what was I thinking about X", "pick up X again",
   "did I write anything about X", "what did I write this week", "show my daily
   logs", "when did I last send an update on X", or when re-entering a line of
-  work after a task switch. Do NOT use to capture new thinking (use `note`) or to
-  create reminders (use `remind`).
+  work after a task switch. Do NOT use to capture new thinking (use `note`).
 ---
 
 # Recall
@@ -44,7 +43,7 @@ exactly as it does to threads.
 
 ```
 mill-baseline · touched 4 days ago · 3 neighbours (retrieval, task-switching) ·
-2 open reminders · 2 snapshots, latest 2026-07-29
+2 snapshots, latest 2026-07-29
 ```
 
 Counts, names, and dates only. A header carries no content, which is exactly why
@@ -55,8 +54,6 @@ could confirm by looking at the files for a second:
 
 ```
 - mill-baseline is touched: 2026-07-25, but its newest snapshot is 2026-07-29.
-- The open reminder "chase PROJ-5059" names a ticket this thread's Next move
-  no longer mentions.
 - Two of the three neighbours also carry `retrieval`.
 ```
 
@@ -209,22 +206,7 @@ separately — which direction a relationship runs is information.
 Present hops 2 and 3 **in file order, unranked**. Ordering by relevance is
 ranking, and ranking is judgment.
 
-### 5. Open reminders
-
-```bash
-osascript -e 'tell application "Reminders" to get name of lists'
-```
-
-Then, for each list, incomplete reminders whose body mentions the thread slug:
-
-```bash
-osascript -e 'tell application "Reminders" to get {name, body, remind me date} of (reminders of list "Work - Now" whose completed is false)'
-```
-
-Filter for `thread: <slug>` in the body. Report them plainly — the obligations
-half of the switch, alongside the thinking half.
-
-### 6. Git history — only on request
+### 5. Git history — only on request
 
 Not included by default. If he asks how he got here or how his thinking moved:
 
@@ -257,8 +239,5 @@ cd ~/workspace/knowledge-vault/main && git log -p threads/<slug>.md
 
 - **Vault or `topics.md` missing**: report it and fall back to a plain grep over
   `threads/` if that directory exists. Do not create anything.
-- **`osascript` permission error** (`Not authorized to send Apple events`):
-  report that reminders could not be read, deliver the thread material anyway.
-  Partial recall beats no recall.
 - **Failure partway through**: just stop. Reads change nothing, so there is
   nothing to release and nothing left in a bad state.

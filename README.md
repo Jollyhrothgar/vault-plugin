@@ -7,7 +7,6 @@ context survives a task switch.
 | --- | --- |
 | `/vault:note` | Capture what you are thinking on the way out of a task |
 | `/vault:recall` | Get it back on the way in |
-| `/vault:remind` | Link a macOS reminder to a thread |
 | `/vault:prune` | Sweep stale threads |
 
 ## Requirements
@@ -31,7 +30,9 @@ What the skills expect inside the vault:
 - `bin/vault-write`, which writes in a temporary worktree and publishes
   through a pull request
 
-`remind` also needs macOS, for Reminders.
+The Reminders.app integration (`remind`, plus reminder steps in `note` and
+`recall`) is switched off. Its parts are kept in [`dormant/reminders/`](dormant/reminders/)
+so it can be brought back.
 
 ## Install
 
