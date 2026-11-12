@@ -9,9 +9,8 @@ description: >-
   when an agent that just did the work should fold what it learned into a thread,
   or when they ask for a dated status snapshot ("where are things at on X",
   "write a status update").
-  Do NOT use for obligations or follow-ups (use `remind`), for retrieving
-  existing notes (use `recall`), or to write his daily log, which he writes
-  himself.
+  Do NOT use for retrieving existing notes (use `recall`), or to write his
+  daily log, which he writes himself.
 ---
 
 # Note
@@ -377,48 +376,7 @@ If `publish` fails *after* opening the PR, the commit is already safe on the
 branch. Run `vault-write merge "$VW_token"` to finish the job rather than
 starting over. `vault-write status` shows every write in flight.
 
-### 9. Drain the Someday inbox
-
-`Work - Someday` in Reminders.app is a **capture inbox, not storage** — it exists
-so Mike can drop an idea from his phone when away from a computer. It only stays
-honest if it gets emptied, so check it on every run:
-
-```bash
-osascript -e 'tell application "Reminders" to get {id, name, body} of (reminders of list "Work - Someday" whose completed is false)'
-```
-
-If it is empty, say nothing and move on. For each item that is there:
-
-1. Propose the thread it belongs to, from the titles read in step 1. If none fits,
-   say so — that is a signal to start a thread, not a reason to invent a home.
-2. Grep the committed target thread for `<!-- reminder-id: <id> -->`. If it is
-   already present, do not fold again; mark only that reminder ID complete and
-   continue. Grep the **committed** file (`git show HEAD:<path>`), not the working
-   copy — an uncommitted marker from another writer is not durable evidence.
-3. Fold the approved items into their threads' `## Someday` sections as bullets,
-   in Mike's words, ending each bullet with `<!-- reminder-id: <id> -->`. Create
-   the section if a thread lacks one.
-4. Publish with its **own** `vault-write begin` / `publish` pair, separate from
-   the fold in step 8 — a drain that fails must not take the thread fold with
-   it. Open it after step 8 has merged, so the drain branches from a vault that
-   already contains your fold.
-5. **Mark each reminder complete only after that fold succeeds:**
-
-```bash
-osascript -e 'tell application "Reminders" to set completed of (first reminder of list "Work - Someday" whose id is "<exact id>") to true'
-```
-
-Complete, never delete — the capture stays recoverable in Reminders' completed
-items if the fold turns out wrong. Completing also removes it from the
-`completed is false` query, so the drain is idempotent and re-running is safe.
-
-**Never mark an item complete without writing it somewhere first.** That silently
-destroys a capture, which is worse than an untidy inbox.
-
-If draining would touch more than ~3 threads, confirm the scope with Mike before
-writing — the same limit as any other fold.
-
-### 10. Offer consolidation, only if warranted
+### 9. Offer consolidation, only if warranted
 
 If the threads you touched show one of these, propose it — once, briefly:
 
@@ -445,9 +403,6 @@ He decides. Do not turn this into a review of the whole vault; that is `prune`.
 - None of his writing was created or changed, and nothing in `main` was touched.
 - The commit landed and was pushed.
 - The vault-writer lock was released by a successful publish.
-- No Someday reminder was marked complete before its fold was committed.
-- Every drained Someday item carries its stable reminder ID, and only that ID was
-  marked complete.
 
 ## Stop Conditions
 
@@ -460,8 +415,7 @@ He decides. Do not turn this into a review of the whole vault; that is `prune`.
 - **He gives one-word answers to the first two questions** — he does not want
   to be interviewed right now. Offer to capture just the `Next move` line and
   stop.
-- **No thread matches and he does not want a new one** — capture nothing;
-  suggest `remind` if it is really an obligation.
+- **No thread matches and he does not want a new one** — capture nothing.
 - **More than ~3 threads would need edits** — confirm the scope before writing.
 - **The vault-writer lock is held** — report its owner metadata and stop. Never
   remove another session's lock to make progress.
